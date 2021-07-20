@@ -1,0 +1,15 @@
+server:
+  port: 9000
+
+spring:
+  data:
+    mongodb:
+      password: password
+      username: username
+      database: workshop
+      port: 27017
+      host: localhost
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
