@@ -5,13 +5,18 @@ import com.example.workshopspring.dto.UserDTO;
 import com.example.workshopspring.repository.UserRepository;
 import com.example.workshopspring.service.UserService;
 import com.example.workshopspring.service.exception.ObjectNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -57,5 +62,15 @@ public class UserServiceImpl implements UserService {
     private void updateData(User newObj, User obj) {
         newObj.setName(obj.getName());
         newObj.setEmail(obj.getEmail());
+    }
+
+    @JmsListener(destination = "create-user-sqs")
+    public void consumerCreateUserSqs(String message) throws JsonProcessingException {
+        log.info("Consumer Create User Sqs, message: ".concat(message));
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(message, User.class);
+        this.insert(user);
+
+        System.out.println(user);
     }
 }

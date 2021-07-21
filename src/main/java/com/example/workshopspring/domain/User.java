@@ -12,6 +12,7 @@ import java.util.Collection;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "user")
