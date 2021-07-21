@@ -4,6 +4,7 @@ import com.example.workshopspring.controller.dto.PostFullSearchDTO;
 import com.example.workshopspring.controller.utils.URL;
 import com.example.workshopspring.domain.Post;
 import com.example.workshopspring.service.PostService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +13,14 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "/posts")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Post> findById(@PathVariable String id)
-    {
+    public ResponseEntity<Post> findById(@PathVariable String id) {
         Post obj = postService.findById(id);
         return ResponseEntity.ok().body(obj);
     }

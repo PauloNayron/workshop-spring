@@ -4,6 +4,7 @@ import com.example.workshopspring.domain.Post;
 import com.example.workshopspring.domain.User;
 import com.example.workshopspring.dto.UserDTO;
 import com.example.workshopspring.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +15,16 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<Collection<UserDTO>> findAll() {
         var userCollection = userService.findAll();
-        var userDTOCollection = userCollection.stream()
+        var userDTOCollection = userCollection.parallelStream()
                 .map(UserDTO::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(userDTOCollection);
