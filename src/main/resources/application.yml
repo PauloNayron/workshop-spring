@@ -2,6 +2,9 @@ server:
   port: 9000
 
 spring:
+  mvc:
+    format:
+      date=yyyy-MM-dd:
   data:
     mongodb:
       password: password

@@ -1,5 +1,6 @@
 package com.example.workshopspring.controller;
 
+import com.example.workshopspring.controller.dto.PostFullSearchDTO;
 import com.example.workshopspring.controller.utils.URL;
 import com.example.workshopspring.domain.Post;
 import com.example.workshopspring.service.PostService;
@@ -32,13 +33,10 @@ public class PostController {
     }
 
     @RequestMapping(value = "/fullsearch", method = RequestMethod.GET)
-    public ResponseEntity<Collection<Post>> fullSearch(
-            @RequestParam(value = "text", defaultValue = "") String text,
-            @RequestParam(value = "minDate", defaultValue = "1900-01-01") String minDate,
-            @RequestParam(value = "maxDate", defaultValue = "2030-01-01") String maxDate) {
-        text = URL.decodeParam(text);
-        LocalDate min = LocalDate.parse(minDate);
-        LocalDate max = LocalDate.parse(maxDate);
+    public ResponseEntity<Collection<Post>> fullSearch(PostFullSearchDTO dto) {
+        var text = dto.getText();
+        var min = LocalDate.parse(dto.getMinData());
+        var max = LocalDate.parse(dto.getMaxData());
         Collection<Post> list = postService.fullSearch(text, min, max);
         return ResponseEntity.ok().body(list);
     }
